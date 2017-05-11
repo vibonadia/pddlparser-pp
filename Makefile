@@ -1,14 +1,16 @@
 CC=g++
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++11 -O2
 
-FLEXPATH=/usr/local/opt/flex
-BISONPATH=/usr/local/opt/bison
+#FLEXPATH=/usr/local/opt/flex
+#BISONPATH=/usr/local/opt/bison
+FLEXPATH=/usr
+BISONPATH=/usr
 
 FLEX=$(FLEXPATH)/bin/flex
 BISON=$(BISONPATH)/bin/bison
 
 INCLUDE=-Iinclude/ -Isrc/
-OBJ=$(addprefix bin/, parser.o scanner.o driver.o action.o predicate.o domain.o problem.o main.o)
+OBJ=$(addprefix bin/, parser.o scanner.o driver.o action.o predicate.o domain.o problem.o instanced_action.o instantiation.o main.o)
 
 .PHONY: all check
 all: pddl
@@ -29,6 +31,15 @@ bin/action.o: src/action.cc
 	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 bin/predicate.o: src/predicate.cc
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+
+bin/instantiation.o: src/instantiation.cc
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+
+bin/instanced_action.o: src/instanced_action.cc
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+
+bin/globals.o: src/globals.cc
 	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 bin/driver.o: src/pddldriver.cc

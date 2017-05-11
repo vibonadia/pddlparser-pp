@@ -13,6 +13,17 @@ Predicate::~Predicate()
 	if (_types) delete _types;
 }
 
+const std::string
+Predicate::getName() const
+{
+	return _name;
+}
+
+StringList *
+Predicate::getArguments() const{
+	return _args;
+}
+
 ostream&
 operator<<(ostream& out, const Predicate& predicate)
 {

@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "action.hh"
+#include "globals.hh"
 
 class Domain {
 public:
@@ -17,6 +18,8 @@ public:
 	void set_predicates(std::vector<Predicate*>* predicates);
 	void set_actions(std::vector<Action*>* actions);
 
+
+	std::vector<Action*> *getActions() const;
 	friend std::ostream &operator<<(std::ostream &os, const Domain &domain);
 
 private:

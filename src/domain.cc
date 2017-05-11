@@ -40,6 +40,13 @@ Domain::set_actions(std::vector<Action*>* actions)
 	_actions = actions;
 }
 
+
+std::vector<Action*>*
+Domain::getActions() const
+{
+	return _actions;
+}
+
 std::ostream&
 operator<<(std::ostream& out, const Domain& domain)
 {

@@ -21,12 +21,14 @@ Problem::~Problem()
 		delete goal->first;
 	}
 	delete _goal;
+
+	//TODO remove types
 }
 
 void
-Problem::set_objects(StringList *objects)
+Problem::set_objects(ObjectMap *types)
 {
-	_objects = objects;
+	_types_objects = types;
 }
 
 
@@ -42,14 +44,31 @@ Problem::set_goal_state(LiteralList *goal)
 	_goal = goal;
 }
 
+const ObjectMap *
+Problem::getTypesObjects() const {
+	return _types_objects;
+}
+
 ostream&
 operator<<(ostream& out, const Problem& problem)
 {
 	out << ">> Problem(name:" << problem._name << ", domain:" << problem._domain << ")" << endl;
 	out << endl;
 	out << "Objects: [";
-	for (auto const& object : *problem._objects) {
-		out << " " << object;
+	if(problem._objects){
+		for (auto const& object : *problem._objects) {
+			out << " " << object;
+		}
+	}
+	if(problem._types_objects){
+		out << endl << "\tTypes: [";
+		for (auto const& typed_object : *problem._types_objects) {
+			out << endl << "\t\t" << typed_object.first << " - ";
+
+			for (auto const& objects : *typed_object.second)
+				out << objects << " ";
+		}
+		out << "\t\t]" << endl;
 	}
 	out << " ]" << endl;
 	out << endl;

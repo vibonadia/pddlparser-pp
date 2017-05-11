@@ -2,6 +2,8 @@
 #include <string>
 #include "pddldriver.hh"
 
+#include "instantiation.hh"
+
 using namespace std;
 
 void usage(char *filename);
@@ -39,6 +41,13 @@ main (int argc, char *argv[])
     cout << endl;
     cout << *(driver.domain)  << endl;
     cout << *(driver.problem) << endl;
+
+    Instantiation instantiaton;
+    InstancedActionList actions = instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
+
+	std::cout << " Instanced Actions "<< std::endl;
+	for(auto action : actions)
+		std::cout << *action << std::endl;
 
     return result;
 }

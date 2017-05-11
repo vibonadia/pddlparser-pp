@@ -17,7 +17,7 @@ Action::Action(
 Action::~Action()
 {
 	if (_params) delete _params;
-	if (_types)      delete _types;
+	if (_types) delete _types;
 
 	for (auto precondition : *_precond) {
 		delete precondition;
@@ -28,6 +28,30 @@ Action::~Action()
 		delete effect;
 	}
 	delete _effects;
+}
+
+const std::string
+Action::getName() const
+{
+	return _name;
+}
+
+const TypeDict *
+Action::getTypes() const
+{
+	return _types;
+}
+
+const PreconditionList *
+Action::getPrecond() const
+{
+	return _precond;
+}
+
+const EffectList *
+Action::getEffects() const
+{
+	return _effects;
 }
 
 ostream &

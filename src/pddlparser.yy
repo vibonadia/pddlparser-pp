@@ -26,6 +26,7 @@ using ActionList    = std::vector<Action*>;
 using PredicateList = std::vector<Predicate*>;
 using ParameterList = std::pair<StringList*,TypeDict*>;
 using ArgumentList  = std::pair<StringList*,TypeDict*>;
+using ObjectMap		= std::map<std::string,StringList*>;
 
 using Literal       = std::pair<Predicate*,bool>;
 using LiteralList   = std::vector<Literal*>;
@@ -127,7 +128,9 @@ class PDDLDriver;
 %type <StringList*>        names-list               "names-list"
 %type <TypeDict*>          typed-names-list         "typed-names-list"
 
-%type <StringList*>        objects-def              "objects-def"
+
+%type <ObjectMap*>         objects-def              "objects-def"
+%type <ObjectMap*>         typed-objects-list       "typed-objects-def"
 
 %type <LiteralList*>       init-def                 "init-def"
 %type <LiteralList*>       goal-def                 "goal-def"
@@ -234,7 +237,35 @@ problem-name: LPAREN PROBLEM NAME RPAREN { $$ = $3; } ;
 
 domain-reference: LPAREN DOMAIN NAME RPAREN { $$ = $3; } ;
 
-objects-def: LPAREN OBJECTS names-list RPAREN { $$ = $3; } ;
+objects-def
+	: LPAREN OBJECTS typed-objects-list RPAREN
+		{
+			$$ = new ObjectMap;
+			for (const auto& var : *$3) {
+                (*$$)[var.first] = var.second;
+            }
+		}
+	| LPAREN OBJECTS names-list RPAREN
+		{
+			$$ = new ObjectMap;
+			(*$$)["notyped"] = $3;
+		}
+	;
+
+typed-objects-list
+	: names-list HYPHEN NAME
+		{
+            std::string type($3);
+            $$ = new ObjectMap;
+            (*$$)[type] = $1;
+        }
+	| typed-objects-list names-list HYPHEN NAME
+        {
+            std::string type($4);
+            (*$1)[type] = $2;
+            $$ = $1;
+        }
+	;
 
 init-def: LPAREN INIT grounded-literal-list RPAREN { $$ = $3; } ;
 
