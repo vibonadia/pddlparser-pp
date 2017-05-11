@@ -23,6 +23,6 @@
 
 	(:action drop
 		:parameters (?obj - ball ?room - room ?gripper - gripper)
-		:precondition (and (ball ?obj) (room ?room) (gripper ?gripper) (carry ?obj ?gripper) (at-robby ?room))
+		:precondition (and (carry ?obj ?gripper) (at-robby ?room))
 		:effect (and (at ?obj ?room) (free ?gripper) (not (carry ?obj ?gripper))))
 )
