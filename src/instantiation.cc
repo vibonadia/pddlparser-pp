@@ -4,13 +4,25 @@ Instantiation::Instantiation() {}
 
 Instantiation::~Instantiation() {}
 
+InstancedLiteralList
+Instantiation::instantiaton_state(LiteralList * state)
+{
+
+	InstancedLiteralList instanced_state;
+	for (auto literal : *state){
+		instanced_state.push_back(
+				instantiate_literal(literal->first,literal->second));
+	}
+
+	return instanced_state;
+}
 
 InstancedActionList
 Instantiation::instantiation_typed_actions(Domain *domain, Problem *problem)
 {
 	InstancedActionList instacedActionList;// = new InstancedActionList;
 
-	std::vector<Action*>	* actions 		= domain->getActions();
+	std::vector<Action*>	* actions		= domain->getActions();
 	const ObjectMap			* types_objects	= problem->getTypesObjects();
 
 	for(auto action : *actions)
@@ -20,8 +32,8 @@ Instantiation::instantiation_typed_actions(Domain *domain, Problem *problem)
 		const PreconditionList	* preconditions		= action->getPrecond();
 		const EffectList		* effects			= action->getEffects();
 
-		std::vector<StringList> * combinations = new std::vector<StringList>();
-		std::map<std::string, int> * ref_parameter = new std::map<std::string, int>();
+		std::vector<StringList> * combinations		= new std::vector<StringList>();
+		std::map<std::string, int> * ref_parameter	= new std::map<std::string, int>();
 		generate_parameters_combinations(
 				types_parameters,
 				types_objects,
@@ -61,7 +73,7 @@ Instantiation::generate_parameters_combinations(
 }
 
 std::vector<std::vector<std::string>>
-Instantiation::cartesian_product (const std::vector<std::vector<std::string>>& v) {
+Instantiation::cartesian_product (const std::vector<std::vector<std::string>>& v) const {
 
 	std::vector<std::vector<std::string>> s = {{}};
     for (const auto& u : v) {
@@ -79,7 +91,7 @@ Instantiation::cartesian_product (const std::vector<std::vector<std::string>>& v
 
 // generate action name
 std::string
-Instantiation::name_instantiate_action(Action *action, std::vector<std::string> combination){
+Instantiation::name_instantiate_action(Action *action, std::vector<std::string> combination) const{
 
 	std::string name = action->getName();
 	for(auto c : combination)
@@ -92,7 +104,7 @@ InstancedLiteralList *
 Instantiation::instantiate_literals (
 		std::vector<std::string> combination,
 		const std::vector<Literal*> * literals,
-		std::map<std::string, int> name_indc) const
+		std::map<std::string, int> name_indc)
 {
 	InstancedLiteralList * instanced_literals = new InstancedLiteralList;
 
@@ -114,7 +126,7 @@ Instantiation::instantiate_literal(
 		std::vector<std::string> combination,
 		Predicate * predicate,
 		std::map<std::string, int> name_indc,
-		bool value) const
+		bool value)
 {
 	std::string literal;
 	literal = predicate->getName();
@@ -124,7 +136,41 @@ Instantiation::instantiate_literal(
 		literal += ("_" + combination[i]);
 	}
 
-	InstancedLiteral * instanced_literal = new InstancedLiteral(literal, value);
+	int predicate_number = add_predicate(literal);
+	InstancedLiteral * instanced_literal = new InstancedLiteral(predicate_number, value);
 	return instanced_literal;
+}
 
+InstancedLiteral *
+Instantiation::instantiate_literal(
+		Predicate * predicate,
+		bool value)
+{
+	std::string predicate_name;
+	predicate_name = predicate->getName();
+
+	for(auto argument : *predicate->getArguments()){
+		predicate_name+= "_" + argument;
+	}
+
+	int predicate_number = add_predicate(predicate_name);
+	InstancedLiteral * instanced_literal = new InstancedLiteral(predicate_number, value);
+	return instanced_literal;
+}
+
+int
+Instantiation::add_predicate(const std::string predicate)
+{
+	std::tr1::unordered_map<std::string, int>::const_iterator iterator = instanced_predicates.find(predicate);
+	int value = instanced_predicates.size();
+
+	if (iterator == instanced_predicates.end()){
+		std::pair<std::string, int> pair (predicate, value+1);
+		instanced_predicates.insert(pair);
+		return value+1;
+	}else{
+		value = (*iterator).second;
+	}
+
+	return value;
 }

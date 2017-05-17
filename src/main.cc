@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
-#include "pddldriver.hh"
+#include <fstream>
 
+#include "pddldriver.hh"
 #include "instantiation.hh"
 
 using namespace std;
 
 void usage(char *filename);
+void instantiation_output(PDDLDriver driver);
 
 int
 main (int argc, char *argv[])
@@ -38,18 +40,59 @@ main (int argc, char *argv[])
         }
     }
 
-    cout << endl;
-    cout << *(driver.domain)  << endl;
-    cout << *(driver.problem) << endl;
-
-    Instantiation instantiaton;
-    InstancedActionList actions = instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
-
-	std::cout << " Instanced Actions "<< std::endl;
-	for(auto action : actions)
-		std::cout << *action << std::endl;
-
+    instantiation_output(driver);
     return result;
+}
+
+void
+instantiation_output(PDDLDriver driver){
+    Instantiation instantiaton;
+    InstancedActionList actions	= instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
+    InstancedLiteralList state	= instantiaton.instantiaton_state(driver.problem->getInit());
+    InstancedLiteralList goal	= instantiaton.instantiaton_state(driver.problem->getGoal());
+
+	ofstream outfile;
+	outfile.open("output", ios::out);
+
+	outfile << "begin_predicates" << endl;
+	for(auto predicate : instantiaton.instanced_predicates)
+		outfile << predicate.first << ","<< predicate.second << endl;
+	outfile << "end_predicates" << endl;
+
+	//TODO move logic
+	outfile << "begin_initial_state" << endl;
+	for(auto literal : state)
+	{
+		if(literal->second)
+			outfile << literal->first;
+		else
+			outfile << "NOT " << literal->first;
+		outfile << endl;
+	}
+	outfile << "end_initial_state" << endl;
+
+	outfile << "begin_goal" << endl;
+	for(auto literal : goal)
+	{
+		if(literal->second)
+			outfile << literal->first;
+		else
+			outfile << "NOT " << literal->first;
+		outfile << endl;
+	}
+	outfile << "end_goal" << endl;
+
+	outfile << "begin_actions" << std::endl;
+	outfile << actions.size() << std::endl;
+	for(auto action : actions)
+	{
+		outfile << "begin_action" << std::endl;
+		outfile << *action;
+		outfile << "end_action" << std::endl;
+	}
+	outfile << "end_actions" << std::endl;
+
+	outfile.close();
 }
 
 void

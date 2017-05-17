@@ -1,8 +1,8 @@
 #ifndef _PROBLEM_HH_
 #define _PROBLEM_HH_
 
-#include <string>
 #include <iostream>
+#include <string>
 #include <vector>
 #include <tuple>
 
@@ -28,6 +28,14 @@ public:
 	const ObjectMap* getTypesObjects() const;
 
 	friend std::ostream &operator<<(std::ostream& out, const Problem& problem);
+
+	LiteralList* getGoal() const {
+		return _goal;
+	}
+
+	LiteralList* getInit() const {
+		return _init;
+	}
 
 private:
 	std::string _name;

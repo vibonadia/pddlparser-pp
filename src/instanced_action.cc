@@ -21,35 +21,35 @@ InstancedAction::~InstancedAction() {
 ostream &
 operator<<(ostream& out, const InstancedAction& action)
 {
-	out << "Instanced Action(name: " << action._name << ")" << endl;
+	out << action._name << endl;
 	if (action._precond) {
 
-		out << "Precond: [" << endl;
+		out << "preconditions" << endl;
+		out << action._precond->size() << endl;
 		for (auto const& literal : *action._precond) {
 			if (literal->second) {
-				out << "  " << literal->first;
+				out << literal->first;
 			}
 			else {
-				out << "  NOT " << literal->first;
+				out << "NOT " << literal->first;
 			}
 			out <<  endl;
 		}
-		out << "]" << endl;
 	}
 
 	if (action._effects) {
 
-		out << "Effects: [" << endl;
+		out << "effects" << endl;
+		out << action._effects->size() << endl;
 		for (auto const& literal : *action._effects) {
 			if (literal->second) {
-				out << "  " << literal->first;
+				out << literal->first;
 			}
 			else {
-				out << "  NOT " << literal->first;
+				out << "NOT " << literal->first;
 			}
 			out <<  endl;
 		}
-		out << "]" << endl;
 	}
 	return out;
 }
