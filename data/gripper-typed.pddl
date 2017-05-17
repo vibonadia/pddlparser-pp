@@ -7,7 +7,7 @@
 
 	(:predicates
 		(at-robby ?r - room)
-		(at ?b - ball ?r - room)
+		(at-ball ?b - ball ?r - room)
 		(free ?g - gripper)
 		(carry ?o - ball ?g - gripper))
 
@@ -18,11 +18,11 @@
 
 	(:action pick
 		:parameters (?obj - ball ?room - room ?gripper - gripper)
-		:precondition  (and  (at ?obj ?room) (at-robby ?room) (free ?gripper))
-		:effect (and (carry ?obj ?gripper) (not (at ?obj ?room)) (not (free ?gripper))))
+		:precondition  (and  (at-ball ?obj ?room) (at-robby ?room) (free ?gripper))
+		:effect (and (carry ?obj ?gripper) (not (at-ball ?obj ?room)) (not (free ?gripper))))
 
 	(:action drop
 		:parameters (?obj - ball ?room - room ?gripper - gripper)
 		:precondition (and (carry ?obj ?gripper) (at-robby ?room))
-		:effect (and (at ?obj ?room) (free ?gripper) (not (carry ?obj ?gripper))))
+		:effect (and (at-ball ?obj ?room) (free ?gripper) (not (carry ?obj ?gripper))))
 )
