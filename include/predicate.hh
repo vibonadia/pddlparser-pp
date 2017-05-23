@@ -15,15 +15,15 @@ public:
 	Predicate(std::string name, ArgumentList *args);
 	virtual ~Predicate();
 
-	const std::string	get_name() const;
-	StringList			* get_arguments() const;
+	const std::string   get_name() const;
+	StringList         *get_arguments() const;
 
 	friend std::ostream& operator<<(std::ostream& out, const Predicate& predicate);
 
 private:
 	std::string  _name;
-	StringList  *_args;
-	TypeDict    *_types;
+	StringList   *_args;
+	TypeDict     *_types;
 };
 
 #endif

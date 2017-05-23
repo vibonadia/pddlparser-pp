@@ -22,18 +22,18 @@ Instantiation::instantiation_typed_actions(Domain *domain, Problem *problem)
 {
 	InstancedActionList instacedActionList;
 
-	std::vector<Action*>	* actions		= domain->get_actions();
-	const ObjectMap			* types_objects	= problem->get_types_objects();
+	std::vector<Action*>  * actions        = domain->get_actions();
+	const ObjectMap       * types_objects  = problem->get_types_objects();
 
 	for(auto action : *actions)
 	{
 
-		const TypeDict			* types_parameters	= action->get_types();
-		const PreconditionList	* preconditions		= action->get_precond();
-		const EffectList		* effects			= action->get_effects();
+		const TypeDict          * types_parameters  = action->get_types();
+		const PreconditionList  * preconditions     = action->get_precond();
+		const EffectList        * effects           = action->get_effects();
 
-		std::vector<StringList> * combinations		= new std::vector<StringList>();
-		std::map<std::string, int> * ref_parameter	= new std::map<std::string, int>();
+		std::vector<StringList>    * combinations  = new std::vector<StringList>();
+		std::map<std::string, int> * ref_parameter = new std::map<std::string, int>();
 		generate_parameters_combinations(
 				types_parameters,
 				types_objects,

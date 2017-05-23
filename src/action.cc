@@ -3,10 +3,10 @@
 using namespace std;
 
 Action::Action(
-	const string&        name,
-	const ParameterList *params,
+	const string&           name,
+	const ParameterList    *params,
 	const PreconditionList *precond,
-	const EffectList *effects) :
+	const EffectList       *effects) :
 		_name(name),
 		_params(params->first), _types(params->second),
 		_precond(precond), _effects(effects)

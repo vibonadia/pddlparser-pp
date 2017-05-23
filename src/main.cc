@@ -48,16 +48,16 @@ main (int argc, char *argv[])
 void
 instantiation_output(PDDLDriver &driver){
     Instantiation instantiaton;
-    InstancedActionList actions	= instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
-    InstancedLiteralList state	= instantiaton.instantiaton_state(driver.problem->get_init());
-    InstancedLiteralList goal	= instantiaton.instantiaton_state(driver.problem->get_goal());
+    InstancedActionList actions = instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
+    InstancedLiteralList state  = instantiaton.instantiaton_state(driver.problem->get_init());
+    InstancedLiteralList goal   = instantiaton.instantiaton_state(driver.problem->get_goal());
 
 	ofstream outfile;
 	const string filename = driver.problem->get_name() + "_output";
 	outfile.open(filename.c_str(), ios::out);
 
 	outfile << "begin_predicates" << endl;
-		outfile << instantiaton.instanced_predicates.size() << endl;
+	outfile << instantiaton.instanced_predicates.size() << endl;
 	for(auto predicate : instantiaton.instanced_predicates)
 		outfile << predicate.first << " "<< predicate.second << endl;
 	outfile << "end_predicates" << endl;
