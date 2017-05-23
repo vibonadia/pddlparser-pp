@@ -22,10 +22,10 @@ public:
 
 	virtual ~Action();
 
-	const std::string		getName() const;
-	const TypeDict			* getTypes() const;
-	const PreconditionList	* getPrecond() const;
-	const EffectList		* getEffects() const;
+	const std::string		get_name() const;
+	const TypeDict			* get_types() const;
+	const PreconditionList	* get_precond() const;
+	const EffectList		* get_effects() const;
 
 	friend std::ostream& operator<<(std::ostream& out, const Action& action);
 

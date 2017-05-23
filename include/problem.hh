@@ -18,22 +18,25 @@ public:
 	Problem(const std::string& name, const std::string& domain);
 	virtual ~Problem();
 
-	//TODO Check unused methods and remove
 //	void set_objects(StringList *objects);
 	void set_objects(ObjectMap	*types);
 
 	void set_init_state(LiteralList *init);
 	void set_goal_state(LiteralList *goal);
 
-	const ObjectMap* getTypesObjects() const;
+	const ObjectMap* get_types_objects() const;
 
 	friend std::ostream &operator<<(std::ostream& out, const Problem& problem);
 
-	LiteralList* getGoal() const {
+	const std::string& get_name() const {
+		return _name;
+	}
+
+	LiteralList* get_goal() const {
 		return _goal;
 	}
 
-	LiteralList* getInit() const {
+	LiteralList* get_init() const {
 		return _init;
 	}
 

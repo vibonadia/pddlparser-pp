@@ -15,8 +15,8 @@ public:
 	Predicate(std::string name, ArgumentList *args);
 	virtual ~Predicate();
 
-	const std::string		getName() const;
-	StringList			* getArguments() const;
+	const std::string	get_name() const;
+	StringList			* get_arguments() const;
 
 	friend std::ostream& operator<<(std::ostream& out, const Predicate& predicate);
 

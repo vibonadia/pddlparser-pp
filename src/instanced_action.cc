@@ -14,8 +14,15 @@ InstancedAction::InstancedAction(
 
 InstancedAction::~InstancedAction() {
 
+	for (auto precondition : *_precond) {
+		delete precondition;
+	}
 	if (_precond) delete _precond;
-	if (_effects) delete _effects;
+
+	for (auto effect : *_effects) {
+		delete effect;
+	}
+	delete _effects;
 }
 
 ostream &
@@ -28,10 +35,10 @@ operator<<(ostream& out, const InstancedAction& action)
 		out << action._precond->size() << endl;
 		for (auto const& literal : *action._precond) {
 			if (literal->second) {
-				out << literal->first;
+				out << "1 " << literal->first;
 			}
 			else {
-				out << "NOT " << literal->first;
+				out << "0 " << literal->first;
 			}
 			out <<  endl;
 		}
@@ -43,10 +50,10 @@ operator<<(ostream& out, const InstancedAction& action)
 		out << action._effects->size() << endl;
 		for (auto const& literal : *action._effects) {
 			if (literal->second) {
-				out << literal->first;
+				out << "1 " << literal->first;
 			}
 			else {
-				out << "NOT " << literal->first;
+				out << "0 " << literal->first;
 			}
 			out <<  endl;
 		}

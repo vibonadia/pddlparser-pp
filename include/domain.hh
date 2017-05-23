@@ -19,7 +19,7 @@ public:
 	void set_actions(std::vector<Action*>* actions);
 
 
-	std::vector<Action*> *getActions() const;
+	std::vector<Action*> *get_actions() const;
 	friend std::ostream &operator<<(std::ostream &os, const Domain &domain);
 
 private:

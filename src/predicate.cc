@@ -14,13 +14,13 @@ Predicate::~Predicate()
 }
 
 const std::string
-Predicate::getName() const
+Predicate::get_name() const
 {
 	return _name;
 }
 
 StringList *
-Predicate::getArguments() const{
+Predicate::get_arguments() const{
 	return _args;
 }
 

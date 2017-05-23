@@ -22,7 +22,9 @@ Problem::~Problem()
 	}
 	delete _goal;
 
-	//TODO remove types
+	if(_types_objects)
+		delete _types_objects;
+
 }
 
 void
@@ -45,7 +47,7 @@ Problem::set_goal_state(LiteralList *goal)
 }
 
 const ObjectMap *
-Problem::getTypesObjects() const {
+Problem::get_types_objects() const {
 	return _types_objects;
 }
 

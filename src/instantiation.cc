@@ -20,17 +20,17 @@ Instantiation::instantiaton_state(LiteralList * state)
 InstancedActionList
 Instantiation::instantiation_typed_actions(Domain *domain, Problem *problem)
 {
-	InstancedActionList instacedActionList;// = new InstancedActionList;
+	InstancedActionList instacedActionList;
 
-	std::vector<Action*>	* actions		= domain->getActions();
-	const ObjectMap			* types_objects	= problem->getTypesObjects();
+	std::vector<Action*>	* actions		= domain->get_actions();
+	const ObjectMap			* types_objects	= problem->get_types_objects();
 
 	for(auto action : *actions)
 	{
 
-		const TypeDict			* types_parameters	= action->getTypes();
-		const PreconditionList	* preconditions		= action->getPrecond();
-		const EffectList		* effects			= action->getEffects();
+		const TypeDict			* types_parameters	= action->get_types();
+		const PreconditionList	* preconditions		= action->get_precond();
+		const EffectList		* effects			= action->get_effects();
 
 		std::vector<StringList> * combinations		= new std::vector<StringList>();
 		std::map<std::string, int> * ref_parameter	= new std::map<std::string, int>();
@@ -93,7 +93,7 @@ Instantiation::cartesian_product (const std::vector<std::vector<std::string>>& v
 std::string
 Instantiation::name_instantiate_action(Action *action, std::vector<std::string> combination) const{
 
-	std::string name = action->getName();
+	std::string name = action->get_name();
 	for(auto c : combination)
 		name += "_" + c;
 
@@ -129,9 +129,9 @@ Instantiation::instantiate_literal(
 		bool value)
 {
 	std::string literal;
-	literal = predicate->getName();
+	literal = predicate->get_name();
 
-	for(auto argument : *predicate->getArguments()){
+	for(auto argument : *predicate->get_arguments()){
 		int i = name_indc.find(argument)->second;
 		literal += ("_" + combination[i]);
 	}
@@ -147,9 +147,9 @@ Instantiation::instantiate_literal(
 		bool value)
 {
 	std::string predicate_name;
-	predicate_name = predicate->getName();
+	predicate_name = predicate->get_name();
 
-	for(auto argument : *predicate->getArguments()){
+	for(auto argument : *predicate->get_arguments()){
 		predicate_name+= "_" + argument;
 	}
 

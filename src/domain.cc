@@ -42,7 +42,7 @@ Domain::set_actions(std::vector<Action*>* actions)
 
 
 std::vector<Action*>*
-Domain::getActions() const
+Domain::get_actions() const
 {
 	return _actions;
 }

@@ -31,25 +31,25 @@ Action::~Action()
 }
 
 const std::string
-Action::getName() const
+Action::get_name() const
 {
 	return _name;
 }
 
 const TypeDict *
-Action::getTypes() const
+Action::get_types() const
 {
 	return _types;
 }
 
 const PreconditionList *
-Action::getPrecond() const
+Action::get_precond() const
 {
 	return _precond;
 }
 
 const EffectList *
-Action::getEffects() const
+Action::get_effects() const
 {
 	return _effects;
 }

@@ -8,7 +8,7 @@
 using namespace std;
 
 void usage(char *filename);
-void instantiation_output(PDDLDriver driver);
+void instantiation_output(PDDLDriver &driver);
 
 int
 main (int argc, char *argv[])
@@ -41,43 +41,48 @@ main (int argc, char *argv[])
     }
 
     instantiation_output(driver);
+
     return result;
 }
 
 void
-instantiation_output(PDDLDriver driver){
+instantiation_output(PDDLDriver &driver){
     Instantiation instantiaton;
     InstancedActionList actions	= instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
-    InstancedLiteralList state	= instantiaton.instantiaton_state(driver.problem->getInit());
-    InstancedLiteralList goal	= instantiaton.instantiaton_state(driver.problem->getGoal());
+    InstancedLiteralList state	= instantiaton.instantiaton_state(driver.problem->get_init());
+    InstancedLiteralList goal	= instantiaton.instantiaton_state(driver.problem->get_goal());
 
 	ofstream outfile;
-	outfile.open("output", ios::out);
+	const string filename = driver.problem->get_name() + "_output";
+	outfile.open(filename.c_str(), ios::out);
 
 	outfile << "begin_predicates" << endl;
+		outfile << instantiaton.instanced_predicates.size() << endl;
 	for(auto predicate : instantiaton.instanced_predicates)
-		outfile << predicate.first << ","<< predicate.second << endl;
+		outfile << predicate.first << " "<< predicate.second << endl;
 	outfile << "end_predicates" << endl;
 
 	//TODO move logic
 	outfile << "begin_initial_state" << endl;
+	outfile << state.size() << endl;
 	for(auto literal : state)
 	{
 		if(literal->second)
-			outfile << literal->first;
+			outfile << "1 " << literal->first;
 		else
-			outfile << "NOT " << literal->first;
+			outfile << "0 " << literal->first;
 		outfile << endl;
 	}
 	outfile << "end_initial_state" << endl;
 
 	outfile << "begin_goal" << endl;
+	outfile << goal.size() << endl;
 	for(auto literal : goal)
 	{
 		if(literal->second)
-			outfile << literal->first;
+			outfile << "1 " << literal->first;
 		else
-			outfile << "NOT " << literal->first;
+			outfile << "0 " << literal->first;
 		outfile << endl;
 	}
 	outfile << "end_goal" << endl;
@@ -101,7 +106,6 @@ usage(char *filename)
     cout << "usage: " << filename << " [-s] [-p] <domain.pddl> <problem.pddl>" << endl;
     cout << endl;
     cout << "Domain and problem PDDL parser in C/C++ using Flex & Bison." << endl;
-    cout << "https://github.com/thiagopbueno/pddlparser-pp" << endl;
     cout << endl;
     cout << "OPTIONS:" << endl;
     cout << " -s\tenable scanning trace." << endl;
