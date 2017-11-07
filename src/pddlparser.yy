@@ -28,9 +28,10 @@ using ParameterList = std::pair<StringList*,TypeDict*>;
 using ArgumentList  = std::pair<StringList*,TypeDict*>;
 using ObjectMap		= std::map<std::string,StringList*>;
 
-using Literal       = std::pair<Predicate*,bool>;
-using LiteralList   = std::vector<Literal*>;
-using ActionDefBody = std::pair<LiteralList*,LiteralList*>;
+using Literal       	= std::pair<Predicate*,bool>;
+using LiteralList   	= std::vector<Literal*>;
+using NondetEffectList  = std::vector<LiteralList*>;
+using ActionDefBody 	= std::pair<LiteralList*,NondetEffectList*>;
 
 using DomainBody    = struct {
     StringList     *requirements;
@@ -73,6 +74,7 @@ class PDDLDriver;
     PARAMETERS      "parameters"
     PRECONDITIONS   "preconditions"
     EFFECTS         "effects"
+    NONDETEFFECTS   "nondeteffects"
     AND             "and"
     NOT             "not"
     EQUAL           "="
@@ -101,9 +103,11 @@ class PDDLDriver;
 %type <Action*>            action-def               "action-def"
 %type <ActionDefBody*>     action-def-body          "action-def-body"
 
-%type <LiteralList*>     preconditions-list         "preconditions-list"
-%type <LiteralList*>     effects-list               "effects-list"
-%type <LiteralList*>     atomic-formula             "atomic-formula"
+%type <LiteralList*>       preconditions-list         "preconditions-list"
+%type <NondetEffectList*>  effects-list               "effects-list"
+%type <NondetEffectList*>  non-det-effects-list		  "non-det-effects-list"
+%type <LiteralList*>       effect-def-body			  "effect-def-body"			  
+%type <LiteralList*>       atomic-formula             "atomic-formula"
 
 %type <Predicate*>         predicate                "predicate"
 %type <Predicate*>         grounded-predicate       "grounded-predicate"
@@ -223,7 +227,17 @@ action-def-body: preconditions-list effects-list
 
 preconditions-list: PRECONDITIONS atomic-formula { $$ = $2; } ;
 
-effects-list: EFFECTS atomic-formula { $$ = $2; } ;
+effects-list
+	: effect-def-body { $$ = new NondetEffectList; $$->push_back($1); }
+	| NONDETEFFECTS non-det-effects-list { $$ = $2; } 
+	;
+
+non-det-effects-list
+	: effect-def-body { $$ = new NondetEffectList; $$->push_back($1); }
+	| non-det-effects-list effect-def-body { $1->push_back($2); $$ = $1; }
+	;
+
+effect-def-body: EFFECTS atomic-formula { $$ = $2; } ;
 
 problem-def: LPAREN DEFINE problem-name domain-reference objects-def init-def goal-def RPAREN
     {

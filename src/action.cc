@@ -3,10 +3,10 @@
 using namespace std;
 
 Action::Action(
-	const string&           name,
-	const ParameterList    *params,
-	const PreconditionList *precond,
-	const EffectList       *effects) :
+	const string&			name,
+	const ParameterList		*params,
+	const PreconditionList	*precond,
+	const NondetEffectList	*effects) :
 		_name(name),
 		_params(params->first), _types(params->second),
 		_precond(precond), _effects(effects)
@@ -48,7 +48,7 @@ Action::get_precond() const
 	return _precond;
 }
 
-const EffectList *
+const NondetEffectList *
 Action::get_effects() const
 {
 	return _effects;
@@ -92,21 +92,26 @@ operator<<(ostream& out, const Action& action)
 		}
 	}
 	out << "]" << endl;
-	size = action._effects->size();
-	out << ">> effects:[";
-	for (decltype(size) i = 0; i < size; ++i) {
-		auto literal   = (*action._effects)[i];
-		auto predicate = literal->first;
-		bool positive  = literal->second;
-		if (i == 0) {
-			if (!positive) out << "NOT ";
-			out << *predicate;
+
+	out << ">> non-deterministic effects:[" << endl;
+	for (auto effects :  *action._effects){
+		out << ">>> effects: ";
+		size = effects->size();
+		for (decltype(size) i = 0; i < size; ++i) {
+			auto literal   = (*effects)[i];
+			auto predicate = literal->first;
+			bool positive  = literal->second;
+			if (i == 0) {
+				if (!positive) out << "NOT ";
+				out << *predicate;
+			}
+			else {
+				out << ", ";
+				if (!positive) out << "NOT ";
+				out << *predicate;
+			}
 		}
-		else {
-			out << ", ";
-			if (!positive) out << "NOT ";
-			out << *predicate;
-		}
+		out << endl;
 	}
 	out << "])" << endl;
 	return out;

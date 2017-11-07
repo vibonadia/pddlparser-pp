@@ -11,18 +11,18 @@
 #include "domain.hh"
 #include "problem.hh"
 #include "action.hh"
-#include "instanced_action.hh"
+#include "instantiated_action.hh"
 
-using InstancedActionList = std::vector<InstancedAction*>;
+using InstantiatedActionList = std::vector<InstantiatedAction*>;
 
 class Instantiation {
 public:
 	Instantiation();
 	virtual ~Instantiation();
 
-	std::tr1::unordered_map<std::string, int> instanced_predicates;
-	InstancedActionList instantiation_typed_actions(Domain *domain, Problem *problem);
-	InstancedLiteralList instantiaton_state(LiteralList * state);
+	std::tr1::unordered_map<std::string, int> instantiated_predicates;
+	InstantiatedActionList * instantiation_typed_actions(Domain *domain, Problem *problem);
+	InstantiatedLiteralList instantiaton_state(LiteralList * state);
 
 private:
 
@@ -40,18 +40,18 @@ private:
 	std::string name_instantiate_action
 		(Action *action, std::vector<std::string> combination) const;
 
-	InstancedLiteralList * instantiate_literals(
+	InstantiatedLiteralList * instantiate_literals(
 			std::vector<std::string> combination,
 			const PreconditionList * literals,
 			std::map<std::string, int> ref_parameter);
 
-	InstancedLiteral * instantiate_literal(
+	InstantiatedLiteral * instantiate_literal(
 			std::vector<std::string> combination,
 			Predicate * predicate,
 			std::map<std::string, int> ref_parameter,
 			bool value);
 
-	InstancedLiteral * instantiate_literal(
+	InstantiatedLiteral * instantiate_literal(
 			Predicate * predicate,
 			bool value);
 };

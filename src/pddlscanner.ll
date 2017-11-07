@@ -27,7 +27,7 @@ variable  \?[a-zA-Z][a-zA-Z_0-9\-]*
 int       [0-9]+
 blank     [ \t]
 
-requirekey (":strips"|":typing"|":equality")
+requirekey (":strips"|":typing"|":equality"|":non-deterministic")
 
 %{
 // Code run each time a pattern is matched.
@@ -58,7 +58,8 @@ loc.step ();
 ":action"             { return yy::PDDLParser::make_ACTION(loc); };
 ":parameters"         { return yy::PDDLParser::make_PARAMETERS(loc); };
 ":precondition"       { return yy::PDDLParser::make_PRECONDITIONS(loc); };
-":effect"             { return yy::PDDLParser::make_EFFECTS(loc); };
+":effect"			  { return yy::PDDLParser::make_EFFECTS(loc); };
+":nondeteffects"	  { return yy::PDDLParser::make_NONDETEFFECTS(loc); };
 
 ":objects"            { return yy::PDDLParser::make_OBJECTS(loc); };
 ":init"               { return yy::PDDLParser::make_INIT(loc); };

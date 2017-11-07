@@ -10,7 +10,7 @@ FLEX=$(FLEXPATH)/bin/flex
 BISON=$(BISONPATH)/bin/bison
 
 INCLUDE=-Iinclude/ -Isrc/
-OBJ=$(addprefix bin/, parser.o scanner.o driver.o action.o predicate.o domain.o problem.o instanced_action.o instantiation.o main.o)
+OBJ=$(addprefix bin/, parser.o scanner.o driver.o action.o predicate.o domain.o problem.o instantiated_action.o instantiation.o main.o)
 
 .PHONY: all check
 all: pddl
@@ -36,7 +36,7 @@ bin/predicate.o: src/predicate.cc
 bin/instantiation.o: src/instantiation.cc
 	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
-bin/instanced_action.o: src/instanced_action.cc
+bin/instantiated_action.o: src/instantiated_action.cc
 	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 bin/globals.o: src/globals.cc
@@ -54,9 +54,9 @@ bin/scanner.o: src/pddlscanner.ll
 	$(FLEX) --outfile=src/pddllex.yy.cc $<
 	$(CC) $(CXXFLAGS) -Wno-macro-redefined $(INCLUDE) -c src/pddllex.yy.cc -o $@
 
-check: pddl
-	./pddl data/gripper.pddl data/gripper-4.pddl
-	./pddl data/gripper-typed.pddl data/gripper-4.pddl
+#check: pddl
+#	./pddl data/gripper.pddl data/gripper-4.pddl
+#	./pddl data/gripper-typed.pddl data/gripper-4.pddl
 
 .PHONY: clean
 clean:

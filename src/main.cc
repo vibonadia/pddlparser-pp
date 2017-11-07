@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <ctime>
 
 #include "pddldriver.hh"
 #include "instantiation.hh"
@@ -22,6 +23,9 @@ main (int argc, char *argv[])
 
     PDDLDriver driver;
 
+    clock_t timer;
+    timer = clock();
+
     for (int i = 1; i < argc; ++i) {
         if (argv[i] == string ("-p")) {
             driver.trace_parsing = true;
@@ -40,25 +44,32 @@ main (int argc, char *argv[])
         }
     }
 
+	cout << endl;
+	cout << *(driver.domain)  << endl;
+	cout << *(driver.problem) << endl;
+
     instantiation_output(driver);
+    timer = clock() - timer;
+    cout << "Parser: " << timer/(double)CLOCKS_PER_SEC << endl;
 
     return result;
 }
 
+
 void
 instantiation_output(PDDLDriver &driver){
     Instantiation instantiaton;
-    InstancedActionList actions = instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
-    InstancedLiteralList state  = instantiaton.instantiaton_state(driver.problem->get_init());
-    InstancedLiteralList goal   = instantiaton.instantiaton_state(driver.problem->get_goal());
+    InstantiatedActionList *actions	= instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
+    InstantiatedLiteralList state	= instantiaton.instantiaton_state(driver.problem->get_init());
+    InstantiatedLiteralList goal	= instantiaton.instantiaton_state(driver.problem->get_goal());
 
 	ofstream outfile;
 	const string filename = driver.problem->get_name() + "_output";
 	outfile.open(filename.c_str(), ios::out);
 
 	outfile << "begin_predicates" << endl;
-	outfile << instantiaton.instanced_predicates.size() << endl;
-	for(auto predicate : instantiaton.instanced_predicates)
+	outfile << instantiaton.instantiated_predicates.size() << endl;
+	for(auto predicate : instantiaton.instantiated_predicates)
 		outfile << predicate.first << " "<< predicate.second << endl;
 	outfile << "end_predicates" << endl;
 
@@ -88,8 +99,8 @@ instantiation_output(PDDLDriver &driver){
 	outfile << "end_goal" << endl;
 
 	outfile << "begin_actions" << std::endl;
-	outfile << actions.size() << std::endl;
-	for(auto action : actions)
+	outfile << actions->size() << std::endl;
+	for(auto action : *actions)
 	{
 		outfile << "begin_action" << std::endl;
 		outfile << *action;
