@@ -35,6 +35,7 @@ using ActionDefBody 	= std::pair<LiteralList*,NondetEffectList*>;
 
 using DomainBody    = struct {
     StringList     *requirements;
+    ObjectMap      *constants;
     PredicateList  *predicates;
     ActionList     *actions;
 };
@@ -95,6 +96,9 @@ class PDDLDriver;
 %type <std::string>        domain-name              "domain-name"
 %type <DomainBody*>        domain-body              "domain-body"
 
+%type <ObjectMap*>		   constants-def			"constants-def"
+%type <ObjectMap*>         typed-constants-list		"typed-constants-list"
+
 %type <Problem*>           problem-def              "problem-def"
 %type <std::string>        problem-name             "problem-name"
 %type <std::string>        domain-reference         "domain-reference"
@@ -103,11 +107,11 @@ class PDDLDriver;
 %type <Action*>            action-def               "action-def"
 %type <ActionDefBody*>     action-def-body          "action-def-body"
 
-%type <LiteralList*>       preconditions-list         "preconditions-list"
-%type <NondetEffectList*>  effects-list               "effects-list"
-%type <NondetEffectList*>  non-det-effects-list		  "non-det-effects-list"
-%type <LiteralList*>       effect-def-body			  "effect-def-body"			  
-%type <LiteralList*>       atomic-formula             "atomic-formula"
+%type <LiteralList*>       preconditions-list       "preconditions-list"
+%type <NondetEffectList*>  effects-list             "effects-list"
+%type <NondetEffectList*>  non-det-effects-list		"non-det-effects-list"
+%type <LiteralList*>       effect-def-body			"effect-def-body"			  
+%type <LiteralList*>       atomic-formula           "atomic-formula"
 
 %type <Predicate*>         predicate                "predicate"
 %type <Predicate*>         grounded-predicate       "grounded-predicate"
@@ -157,6 +161,7 @@ domain-def: LPAREN DEFINE domain-name domain-body RPAREN
     {
         $$ = new Domain($3);
         $$->set_requirements($4->requirements);
+        $$->set_constants($4->constants);
         $$->set_predicates($4->predicates);
         $$->set_actions($4->actions);
         delete $4;
@@ -165,10 +170,10 @@ domain-def: LPAREN DEFINE domain-name domain-body RPAREN
 domain-name: LPAREN DOMAIN NAME RPAREN { $$ = $3; } ;
 
 domain-body
-    : requirements-def predicates-def actions { $$ = new DomainBody{$1, $2, $3}; }
-    | requirements-def constants predicates-def actions { $$ = new DomainBody{$1, $3, $4}; }
-    | requirements-def types predicates-def actions { $$ = new DomainBody{$1, $3, $4}; }
-    | requirements-def types constants predicates-def actions { $$ = new DomainBody{$1, $4, $5}; }
+    : requirements-def predicates-def actions { $$ = new DomainBody{$1, nullptr, $2, $3}; }
+    | requirements-def constants-def predicates-def actions { $$ = new DomainBody{$1,$2, $3, $4}; }
+    | requirements-def types predicates-def actions { $$ = new DomainBody{$1, nullptr, $3, $4}; }
+    | requirements-def types constants-def predicates-def actions { $$ = new DomainBody{$1, $3, $4, $5}; }
     ;
 
 requirements-def: LPAREN REQUIREMENTS requirekeys-list RPAREN { $$ = $3; } ;
@@ -178,10 +183,29 @@ types
     | LPAREN TYPES typed-names-list RPAREN {}
     ;
 
-constants
-    : LPAREN CONSTANTS names-list RPAREN {}
-    | LPAREN CONSTANTS typed-names-list RPAREN {}
+constants-def
+    : LPAREN CONSTANTS typed-constants-list RPAREN 
+		{
+			$$ = new ObjectMap;
+			for (const auto& var : *$3) 
+				(*$$)[var.first] = var.second;
+		}
     ;
+
+typed-constants-list
+	: names-list HYPHEN NAME
+		{
+            std::string type($3);
+            $$ = new ObjectMap;
+            (*$$)[type] = $1;
+        }
+	| typed-constants-list names-list HYPHEN NAME
+        {
+            std::string type($4);
+            (*$1)[type] = $2;
+            $$ = $1;
+        }
+	;
 
 predicates-def: LPAREN PREDICATES predicates-list RPAREN { $$ = $3; } ;
 

@@ -116,10 +116,9 @@ Instantiation::instantiate_literals (
 		Predicate * predicate = literal->first;
 		bool value = literal->second;
 
-		InstantiatedLiteral * Instantiated_literal =
-				instantiate_literal(combination, predicate, name_indc, value);
+		InstantiatedLiteral * instantiated_literal = instantiate_literal(combination, predicate, name_indc, value);
 
-		instantiated_literals->push_back(Instantiated_literal);
+		instantiated_literals->push_back(instantiated_literal);
 	}
 	return instantiated_literals;
 }
@@ -140,8 +139,8 @@ Instantiation::instantiate_literal(
 	}
 
 	int predicate_number = add_predicate(literal);
-	InstantiatedLiteral * Instantiated_literal = new InstantiatedLiteral(predicate_number, value);
-	return Instantiated_literal;
+	InstantiatedLiteral * instantiated_literal = new InstantiatedLiteral(predicate_number, value);
+	return instantiated_literal;
 }
 
 InstantiatedLiteral *
@@ -157,8 +156,8 @@ Instantiation::instantiate_literal(
 	}
 
 	int predicate_number = add_predicate(predicate_name);
-	InstantiatedLiteral * Instantiated_literal = new InstantiatedLiteral(predicate_number, value);
-	return Instantiated_literal;
+	InstantiatedLiteral * instantiated_literal = new InstantiatedLiteral(predicate_number, value);
+	return instantiated_literal;
 }
 
 int

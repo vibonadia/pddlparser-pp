@@ -48,7 +48,7 @@ main (int argc, char *argv[])
 	cout << *(driver.domain)  << endl;
 	cout << *(driver.problem) << endl;
 
-    instantiation_output(driver);
+//    instantiation_output(driver);
     timer = clock() - timer;
     cout << "Parser: " << timer/(double)CLOCKS_PER_SEC << endl;
 

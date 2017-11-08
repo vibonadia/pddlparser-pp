@@ -12,6 +12,7 @@ using PreconditionList  = std::vector<std::pair<Predicate*,bool>*>;
 using EffectList        = std::vector<std::pair<Predicate*,bool>*>;
 using NondetEffectList  = std::vector<EffectList*>; // nondeterministic effects list
 using ObjectMap         = std::map<std::string, StringList*>; // < object type, objects >
+using ConstantsMap		= std::map<std::string, StringList*>; // < constant type, constants >
 
 
 using Literal           = std::pair<Predicate*,bool>;

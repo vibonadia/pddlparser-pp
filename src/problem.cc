@@ -63,7 +63,7 @@ operator<<(ostream& out, const Problem& problem)
 		}
 	}
 	if(problem._types_objects){
-		out << endl << "\tTypes: [";
+		out << endl << "\tObjects: [";
 		for (auto const& typed_object : *problem._types_objects) {
 			out << endl << "\t\t" << typed_object.first << " - ";
 

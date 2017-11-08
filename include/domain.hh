@@ -15,18 +15,19 @@ public:
 	virtual ~Domain();
 
 	void set_requirements(std::vector<std::string>* requirements);
+	void set_constants(ConstantsMap * constants);
 	void set_predicates(std::vector<Predicate*>* predicates);
 	void set_actions(std::vector<Action*>* actions);
-
 
 	std::vector<Action*> *get_actions() const;
 	friend std::ostream &operator<<(std::ostream &os, const Domain &domain);
 
 private:
-	std::string               _name;
-	std::vector<std::string> *_requirements;
-	std::vector<Predicate*>  *_predicates;
-	std::vector<Action*>     *_actions;
+	std::string					_name;
+	std::vector<std::string>	*_requirements;
+	std::vector<Predicate*>		*_predicates;
+	std::vector<Action*>		*_actions;
+	ConstantsMap				*_types_constants; //<type, constants>
 };
 
 #endif // _DOMAIN_HH_
