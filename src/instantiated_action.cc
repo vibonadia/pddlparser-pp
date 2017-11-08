@@ -2,9 +2,9 @@
 using namespace std;
 
 InstantiatedAction::InstantiatedAction(
-		const std::string&				name,
-		const InstantiatedPrecondList	*precond,
-		const InstantiatedEffectsList	*effects) :
+		const std::string&            name,
+		const InstantiatedPrecondList *precond,
+		const InstantiatedEffectsList *effects) :
 			_name(name),
 			_precond(precond),
 			_effects(effects)
@@ -43,7 +43,6 @@ operator<<(ostream& out, const InstantiatedAction& action)
 			out <<  endl;
 		}
 	}
-
 
 	if (action._effects) {
 		out << "begin_nd_effects" << endl;

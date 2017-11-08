@@ -19,7 +19,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, const InstantiatedAction& action);
 
 private:
-	std::string                 _name;
+	std::string                   _name;
 	const InstantiatedPrecondList *_precond;
 	const InstantiatedEffectsList *_effects;
 

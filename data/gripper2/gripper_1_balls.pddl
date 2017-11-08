@@ -3,8 +3,7 @@
 
 	(:objects
 		rooma roomb - room
-		ball1 - ball
-		left right - gripper)
+		ball1 - ball)
 
 	(:init
 		(free left)

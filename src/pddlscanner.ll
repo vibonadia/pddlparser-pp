@@ -58,8 +58,8 @@ loc.step ();
 ":action"             { return yy::PDDLParser::make_ACTION(loc); };
 ":parameters"         { return yy::PDDLParser::make_PARAMETERS(loc); };
 ":precondition"       { return yy::PDDLParser::make_PRECONDITIONS(loc); };
-":effect"			  { return yy::PDDLParser::make_EFFECTS(loc); };
-":nondeteffects"	  { return yy::PDDLParser::make_NONDETEFFECTS(loc); };
+":effect"             { return yy::PDDLParser::make_EFFECTS(loc); };
+":nondeteffects"      { return yy::PDDLParser::make_NONDETEFFECTS(loc); };
 
 ":objects"            { return yy::PDDLParser::make_OBJECTS(loc); };
 ":init"               { return yy::PDDLParser::make_INIT(loc); };

@@ -47,7 +47,8 @@ Problem::set_goal_state(LiteralList *goal)
 }
 
 const ObjectMap *
-Problem::get_types_objects() const {
+Problem::get_types_objects() const
+{
 	return _types_objects;
 }
 

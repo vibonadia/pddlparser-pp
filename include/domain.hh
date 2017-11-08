@@ -20,14 +20,17 @@ public:
 	void set_actions(std::vector<Action*>* actions);
 
 	std::vector<Action*> *get_actions() const;
+	const ConstantsMap   *get_types_constants() const;
+
 	friend std::ostream &operator<<(std::ostream &os, const Domain &domain);
 
+
 private:
-	std::string					_name;
-	std::vector<std::string>	*_requirements;
-	std::vector<Predicate*>		*_predicates;
-	std::vector<Action*>		*_actions;
-	ConstantsMap				*_types_constants; //<type, constants>
+	std::string              _name;
+	std::vector<std::string> *_requirements;
+	std::vector<Predicate*>  *_predicates;
+	std::vector<Action*>     *_actions;
+	ConstantsMap             *_types_constants; //<type, constants>
 };
 
 #endif // _DOMAIN_HH_

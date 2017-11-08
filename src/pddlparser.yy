@@ -26,12 +26,12 @@ using ActionList    = std::vector<Action*>;
 using PredicateList = std::vector<Predicate*>;
 using ParameterList = std::pair<StringList*,TypeDict*>;
 using ArgumentList  = std::pair<StringList*,TypeDict*>;
-using ObjectMap		= std::map<std::string,StringList*>;
+using ObjectMap		  = std::map<std::string,StringList*>;
 
-using Literal       	= std::pair<Predicate*,bool>;
-using LiteralList   	= std::vector<Literal*>;
+using Literal       	  = std::pair<Predicate*,bool>;
+using LiteralList   	  = std::vector<Literal*>;
 using NondetEffectList  = std::vector<LiteralList*>;
-using ActionDefBody 	= std::pair<LiteralList*,NondetEffectList*>;
+using ActionDefBody 	  = std::pair<LiteralList*,NondetEffectList*>;
 
 using DomainBody    = struct {
     StringList     *requirements;
@@ -96,8 +96,8 @@ class PDDLDriver;
 %type <std::string>        domain-name              "domain-name"
 %type <DomainBody*>        domain-body              "domain-body"
 
-%type <ObjectMap*>		   constants-def			"constants-def"
-%type <ObjectMap*>         typed-constants-list		"typed-constants-list"
+%type <ObjectMap*>         constants-def            "constants-def"
+%type <ObjectMap*>         typed-constants-list     "typed-constants-list"
 
 %type <Problem*>           problem-def              "problem-def"
 %type <std::string>        problem-name             "problem-name"
@@ -109,8 +109,8 @@ class PDDLDriver;
 
 %type <LiteralList*>       preconditions-list       "preconditions-list"
 %type <NondetEffectList*>  effects-list             "effects-list"
-%type <NondetEffectList*>  non-det-effects-list		"non-det-effects-list"
-%type <LiteralList*>       effect-def-body			"effect-def-body"			  
+%type <NondetEffectList*>  non-det-effects-list     "non-det-effects-list"
+%type <LiteralList*>       effect-def-body          "effect-def-body"			  
 %type <LiteralList*>       atomic-formula           "atomic-formula"
 
 %type <Predicate*>         predicate                "predicate"

@@ -31,6 +31,7 @@ private:
 	void generate_parameters_combinations(
 			const TypeDict *  types_parameters,
 			const ObjectMap * types_objects,
+			const ConstantsMap * types_constants,
 			std::vector<StringList> * combinations,
 			std::map<std::string, int> * ref_parameter);
 

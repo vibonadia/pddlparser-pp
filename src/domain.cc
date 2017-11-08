@@ -55,6 +55,12 @@ Domain::get_actions() const
 	return _actions;
 }
 
+const ConstantsMap *
+Domain::get_types_constants() const
+{
+	return _types_constants;
+}
+
 std::ostream&
 operator<<(std::ostream& out, const Domain& domain)
 {

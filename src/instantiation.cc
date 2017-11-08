@@ -21,9 +21,9 @@ Instantiation::instantiation_typed_actions(Domain *domain, Problem *problem)
 {
 	InstantiatedActionList * instantiated_actions = new InstantiatedActionList;
 
-	std::vector<Action*>  * actions        = domain->get_actions();
-	const ObjectMap       * types_objects  = problem->get_types_objects();
-	//TODO get constants
+	std::vector<Action*>  * actions        	= domain->get_actions();
+	const ObjectMap       * types_objects  	= problem->get_types_objects();
+	const ConstantsMap    * types_constants	= domain->get_types_constants();
 
 	for(auto action : *actions)
 	{
@@ -34,8 +34,7 @@ Instantiation::instantiation_typed_actions(Domain *domain, Problem *problem)
 		std::vector<StringList>    * combinations  = new std::vector<StringList>();
 		std::map<std::string, int> * ref_parameter = new std::map<std::string, int>();
 
-		// TODO CONSIDERAR AS CONSTANTES NA COMBINAÇÃO
-		generate_parameters_combinations(types_parameters, types_objects, combinations, ref_parameter);
+		generate_parameters_combinations(types_parameters, types_objects, types_constants, combinations, ref_parameter);
 
 		for ( auto combination : *combinations )
 		{
@@ -59,6 +58,7 @@ void
 Instantiation::generate_parameters_combinations(
 		const TypeDict *  types_parameters,
 		const ObjectMap * types_objects,
+		const ConstantsMap * types_constants,
 		std::vector<StringList> * combinations,
 		std::map<std::string, int> * ref_parameter)
 {
@@ -68,7 +68,16 @@ Instantiation::generate_parameters_combinations(
 
 	for(auto type_parameter : *types_parameters)
 	{
-		combine.push_back(*((types_objects->find(type_parameter.second))->second));
+		if (types_objects->find(type_parameter.second) != types_objects->end())
+			combine.push_back(*((types_objects->find(type_parameter.second))->second));
+		else if (types_constants->find(type_parameter.second) != types_constants->end())
+			combine.push_back(*((types_constants->find(type_parameter.second))->second));
+		else
+		{
+			std::cout << "Instantiation error. Missing type";
+			exit (EXIT_FAILURE);
+		}
+
 		(*ref_parameter)[type_parameter.first] = i;
 		i++;
 	}
