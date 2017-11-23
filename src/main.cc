@@ -55,12 +55,11 @@ main (int argc, char *argv[])
     return result;
 }
 
-
 void
 instantiation_output(PDDLDriver &driver){
     Instantiation instantiaton;
     InstantiatedActionList *actions	= instantiaton.instantiation_typed_actions(driver.domain, driver.problem);
-    InstantiatedLiteralList state	= instantiaton.instantiaton_state(driver.problem->get_init());
+    InstantiatedLiteralList state	= instantiaton.instantiaton_initial_state(driver.problem->get_init());
     InstantiatedLiteralList goal	= instantiaton.instantiaton_state(driver.problem->get_goal());
 
 	ofstream outfile;

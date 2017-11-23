@@ -4,6 +4,44 @@ Instantiation::Instantiation() {}
 
 Instantiation::~Instantiation() {}
 
+bool criterion_order_literals (InstantiatedLiteral *l1, InstantiatedLiteral *l2)
+{
+	return (l1->first < l2->first);
+}
+
+bool find_predicate(InstantiatedLiteralList * literal_list, int id_predicate)
+{
+	for(auto literal : *literal_list)
+	{
+		if(literal->first == id_predicate )
+			return true;
+	}
+	return false;
+}
+
+
+InstantiatedLiteralList
+Instantiation::instantiaton_initial_state(LiteralList * state)
+{
+	InstantiatedLiteralList initial_state;
+	initial_state = instantiaton_state(state);
+
+	//Complete initial state
+	int predicates = instantiated_predicates.size();
+	for (int id_predicate; id_predicate < predicates; id_predicate++)
+	{
+		bool contain_predicate = find_predicate(&initial_state, id_predicate);
+		if(!contain_predicate)
+		{
+			InstantiatedLiteral * instantiated_literal = new InstantiatedLiteral(id_predicate, 0);
+			initial_state.push_back(instantiated_literal);
+		}
+	}
+
+	std::sort(initial_state.begin(), initial_state.end(), criterion_order_literals);
+	return initial_state;
+}
+
 InstantiatedLiteralList
 Instantiation::instantiaton_state(LiteralList * state)
 {
