@@ -66,6 +66,10 @@ instantiation_output(PDDLDriver &driver){
 	const string filename = driver.problem->get_name() + "_output";
 	outfile.open(filename.c_str(), ios::out);
 
+	outfile << "begin_problem_name" << endl;
+	outfile << driver.problem->get_name() << endl;
+	outfile << "begin_problem_name" << endl;
+
 	outfile << "begin_predicates" << endl;
 	outfile << instantiaton.instantiated_predicates.size() << endl;
 	for(auto predicate : instantiaton.instantiated_predicates)
