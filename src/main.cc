@@ -68,7 +68,7 @@ instantiation_output(PDDLDriver &driver){
 
 	outfile << "begin_problem_name" << endl;
 	outfile << driver.problem->get_name() << endl;
-	outfile << "begin_problem_name" << endl;
+	outfile << "end_problem_name" << endl;
 
 	outfile << "begin_predicates" << endl;
 	outfile << instantiaton.instantiated_predicates.size() << endl;
