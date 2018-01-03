@@ -1,5 +1,5 @@
 (define (problem gripper3_1_balls)
-	(:domain gripper)
+	(:domain gripper3)
 
 	(:objects
 		rooma roomb - room

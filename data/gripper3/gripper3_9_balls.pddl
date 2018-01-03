@@ -1,9 +1,9 @@
-(define (problem gripper3_10_balls)
+(define (problem gripper3_9_balls)
 	(:domain gripper3)
 
 	(:objects
 		rooma roomb - room
-		ball1 ball2 ball3 ball4 ball5 ball6 ball7 ball8 ball9 ball10 - ball)
+		ball1 ball2 ball3 ball4 ball5 ball6 ball7 ball8 ball9 - ball)
 
 	(:init
 		(free left)
@@ -18,7 +18,6 @@
 		(at-ball ball7 rooma)
 		(at-ball ball8 rooma)
 		(at-ball ball9 rooma)
-		(at-ball ball10 rooma)
 		(whole ball1)
 		(whole ball2)
 		(whole ball3)
@@ -28,7 +27,6 @@
 		(whole ball7)
 		(whole ball8)
 		(whole ball9)
-		(whole ball10)
 	)
 
 	(:goal
@@ -42,7 +40,6 @@
 			(at-ball ball7 roomb)
 			(at-ball ball8 roomb)
 			(at-ball ball9 roomb)
-			(at-ball ball10 roomb)
 			(whole ball1)
 			(whole ball2)
 			(whole ball3)
@@ -52,7 +49,6 @@
 			(whole ball7)
 			(whole ball8)
 			(whole ball9)
-			(whole ball10)
 			(at-robby roomb)
 		)
 	)
