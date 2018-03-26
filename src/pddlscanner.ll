@@ -27,7 +27,7 @@ variable  \?[a-zA-Z][a-zA-Z_0-9\-]*
 int       [0-9]+
 blank     [ \t]
 
-requirekey (":strips"|":typing"|":equality"|":non-deterministic")
+requirekey (":strips"|":typing"|":equality"|":non-deterministic"|":negative-preconditions")
 
 %{
 // Code run each time a pattern is matched.
