@@ -16,6 +16,9 @@ public:
 	);
 	virtual ~InstantiatedAction();
 
+	const InstantiatedEffectsList * get_effects() const;
+	bool has_predicate(int predicate_id);
+
 	friend std::ostream& operator<<(std::ostream& out, const InstantiatedAction& action);
 
 private:

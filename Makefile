@@ -10,7 +10,7 @@ FLEX=$(FLEXPATH)/bin/flex
 BISON=$(BISONPATH)/bin/bison
 
 INCLUDE=-Iinclude/ -Isrc/
-OBJ=$(addprefix bin/, parser.o scanner.o driver.o action.o predicate.o domain.o problem.o instantiated_action.o instantiation.o main.o)
+OBJ=$(addprefix bin/, parser.o scanner.o driver.o action.o predicate.o domain.o problem.o instantiated_action.o instantiated_problem.o instantiation.o minimize.o main.o)
 
 .PHONY: all check
 all: pddl
@@ -37,6 +37,12 @@ bin/instantiation.o: src/instantiation.cc
 	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 bin/instantiated_action.o: src/instantiated_action.cc
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+
+bin/instantiated_problem.o: src/instantiated_problem.cc
+	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+	
+bin/minimize.o: src/minimize.cc
 	$(CC) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 bin/globals.o: src/globals.cc

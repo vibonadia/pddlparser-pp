@@ -5,6 +5,7 @@
 
 #include "pddldriver.hh"
 #include "instantiation.hh"
+#include "minimize.hh"
 
 using namespace std;
 
@@ -66,20 +67,23 @@ instantiation_output(PDDLDriver &driver){
 	const string filename = driver.problem->get_name() + "_output";
 	outfile.open(filename.c_str(), ios::out);
 
+	Minimize minimize_problem;
+	InstantiatedProblem problem = minimize_problem.minimize(instantiaton, *actions, state, goal);
+
 	outfile << "begin_problem_name" << endl;
 	outfile << driver.problem->get_name() << endl;
 	outfile << "end_problem_name" << endl;
 
 	outfile << "begin_predicates" << endl;
-	outfile << instantiaton.instantiated_predicates.size() << endl;
-	for(auto predicate : instantiaton.instantiated_predicates)
-		outfile << predicate.first << " "<< predicate.second << endl;
+	outfile << problem._instantiated_predicates.size() << endl;
+	for(auto predicate : problem._instantiated_predicates)
+		outfile << predicate.second << " " << predicate.first << endl;
 	outfile << "end_predicates" << endl;
 
 	//TODO move logic
 	outfile << "begin_initial_state" << endl;
-	outfile << state.size() << endl;
-	for(auto literal : state)
+	outfile << problem._intial_state.size() << endl;
+	for(auto literal : problem._intial_state)
 	{
 		if(literal->second)
 			outfile << "1 " << literal->first;
@@ -90,8 +94,8 @@ instantiation_output(PDDLDriver &driver){
 	outfile << "end_initial_state" << endl;
 
 	outfile << "begin_goal" << endl;
-	outfile << goal.size() << endl;
-	for(auto literal : goal)
+	outfile << problem._goal.size() << endl;
+	for(auto literal : problem._goal)
 	{
 		if(literal->second)
 			outfile << "1 " << literal->first;
@@ -102,8 +106,8 @@ instantiation_output(PDDLDriver &driver){
 	outfile << "end_goal" << endl;
 
 	outfile << "begin_actions" << std::endl;
-	outfile << actions->size() << std::endl;
-	for(auto action : *actions)
+	outfile << problem._actions->size() << std::endl;
+	for( auto action : * (problem._actions) )
 	{
 		outfile << "begin_action" << std::endl;
 		outfile << *action;

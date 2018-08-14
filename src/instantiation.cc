@@ -4,6 +4,7 @@ Instantiation::Instantiation() {}
 
 Instantiation::~Instantiation() {}
 
+
 bool criterion_order_literals (InstantiatedLiteral *l1, InstantiatedLiteral *l2)
 {
 	return (l1->first < l2->first);
@@ -18,7 +19,6 @@ bool find_predicate(InstantiatedLiteralList * literal_list, int id_predicate)
 	}
 	return false;
 }
-
 
 InstantiatedLiteralList
 Instantiation::instantiaton_initial_state(LiteralList * state)

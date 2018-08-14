@@ -25,6 +25,33 @@ InstantiatedAction::~InstantiatedAction() {
 	delete _effects;
 }
 
+const InstantiatedEffectsList *
+InstantiatedAction::get_effects() const
+{
+	return _effects;
+}
+
+bool
+InstantiatedAction::has_predicate(int id_predicate)
+{
+	for(auto precond : *_precond)
+	{
+		if(precond->first == id_predicate)
+			return true;
+	}
+
+	for(auto effects : *_effects)
+	{
+		for(auto effect : *effects)
+		{
+			if(effect->first == id_predicate)
+				return true;
+		}
+	}
+
+	return false;
+}
+
 ostream &
 operator<<(ostream& out, const InstantiatedAction& action)
 {

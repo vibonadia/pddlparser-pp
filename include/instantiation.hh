@@ -22,6 +22,7 @@ public:
 	virtual ~Instantiation();
 
 	std::tr1::unordered_map<std::string, int> instantiated_predicates;
+
 	InstantiatedActionList * instantiation_typed_actions(Domain *domain, Problem *problem);
 	InstantiatedLiteralList instantiaton_state(LiteralList * state);
 	InstantiatedLiteralList instantiaton_initial_state(LiteralList * state);
